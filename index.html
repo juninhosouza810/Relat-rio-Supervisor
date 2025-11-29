@@ -4,6 +4,509 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Relatório de Ronda do Oficial Superior/Supervisor do CPI-10</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+
+    <style>
+        /* Estilos CSS para responsividade e visual moderno */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 10px; 
+            background-color: #f4f7f6;
+        }
+        .container {
+            max-width: 100%; 
+            margin: auto;
+            background: #ffffff;
+            padding: 15px; 
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #0056b3;
+            padding-bottom: 15px;
+        }
+        header h1 {
+            color: #0056b3;
+            font-size: 1.5em; 
+            margin-bottom: 5px;
+        }
+        header h2 {
+            font-size: 1.1em;
+        }
+        .pm-logo {
+            max-width: 60px;
+            margin-bottom: 10px;
+        }
+        .section-header {
+            background-color: #0056b3;
+            color: white;
+            padding: 10px 15px;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+            font-size: 0.9em; 
+        }
+        input[type="text"], input[type="date"], input[type="time"], input[type="number"], textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-top: 5px;
+            -webkit-appearance: none; 
+        }
+        textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+        
+        /* Layout Flexível para responsividade em grids - Padrão mobile */
+        .grid-3, .grid-4, .grid-half {
+            display: flex;
+            flex-direction: column;
+            gap: 10px; 
+        }
+        /* Media Query para telas maiores (tablets e desktops) */
+        @media (min-width: 768px) {
+            .grid-3 {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+            }
+            .grid-4 {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+            }
+            .grid-half {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+            }
+        }
+
+        .checkbox-group {
+            border: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            margin-top: 30px;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container" id="report-form">
+        <header>
+            <img src="logo_pmesp.png" alt="Brasão da Polícia Militar" class="pm-logo">
+            <h1>POLÍCIA MILITAR DO ESTADO DE SÃO PAULO</h1>
+            <h2>RELATÓRIO DE RONDA DO OFICIAL SUPERIOR/SUPERVISOR DO CPI-10</h2>
+            <div class="grid-half">
+                <div class="form-group">
+                    <label for="data">Data</label>
+                    <input type="date" id="data" name="data">
+                </div>
+                <div class="form-group">
+                    <label>Turno</label>
+                    <div class="grid-half">
+                        <input type="time" id="turno_inicio" name="turno_inicio" placeholder="Início">
+                        <input type="time" id="turno_fim" name="turno_fim" placeholder="Fim">
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="section-header">1. DADOS DA VIATURA E ENVOLVIDOS</div>
+        <div class="grid-3">
+            <div class="form-group">
+                [cite_start]<label for="km_final">Km Final (Apenas números inteiros) [cite: 2]</label>
+                <input type="number" id="km_final" name="km_final" step="1">
+            </div>
+            <div class="form-group">
+                [cite_start]<label for="km_inicio">Km Início (Apenas números inteiros) [cite: 2]</label>
+                <input type="number" id="km_inicio" name="km_inicio" step="1">
+            </div>
+            <div class="form-group">
+                [cite_start]<label for="km_percorrido">Km Percorrido [cite: 2]</label>
+                <input type="text" id="km_percorrido" name="km_percorrido" readonly placeholder="Calculado Automaticamente">
+            </div>
+        </div>
+
+        <div class="grid-3">
+            <div class="form-group">
+                [cite_start]<label for="posto_graduacao_enc">Posto / Graduação - Enc [cite: 2]</label>
+                <select id="posto_graduacao_enc" name="posto_graduacao_enc">
+                    <option value="">Selecione o Posto</option>
+                    <option value="MAJOR PM">MAJOR PM</option>
+                    <option value="CAPITÃO PM">CAPITÃO PM</option>
+                    <option value="1º TENENTE PM">1º TENENTE PM</option>
+                    <option value="2º TENENTE PM">2º TENENTE PM</option>
+                </select>
+                [cite_start]<label for="re_enc">RE - Enc [cite: 2]</label>
+                <input type="text" id="re_enc" name="re_enc">
+                [cite_start]<label for="nome_guerra_enc">Nome de Guerra - Enc [cite: 2]</label>
+                <input type="text" id="nome_guerra_enc" name="nome_guerra_enc">
+            </div>
+            <div class="form-group">
+                [cite_start]<label for="posto_graduacao_mot">Posto / Graduação - Mot [cite: 2]</label>
+                <select id="posto_graduacao_mot" name="posto_graduacao_mot">
+                    <option value="">Selecione o Posto</option>
+                    <option value="MAJOR PM">MAJOR PM</option>
+                    <option value="CAPITÃO PM">CAPITÃO PM</option>
+                    <option value="1º TENENTE PM">1º TENENTE PM</option>
+                    <option value="2º TENENTE PM">2º TENENTE PM</option>
+                </select>
+                [cite_start]<label for="re_mot">RE - Mot [cite: 2]</label>
+                <input type="text" id="re_mot" name="re_mot">
+                [cite_start]<label for="nome_guerra_mot">Nome de Guerra - Mot [cite: 2]</label>
+                <input type="text" id="nome_guerra_mot" name="nome_guerra_mot">
+            </div>
+            <div class="form-group">
+                [cite_start]<label for="posto_graduacao_aux">Posto / Graduação - Aux [cite: 2]</label>
+                <select id="posto_graduacao_aux" name="posto_graduacao_aux">
+                    <option value="">Selecione o Posto</option>
+                    <option value="MAJOR PM">MAJOR PM</option>
+                    <option value="CAPITÃO PM">CAPITÃO PM</option>
+                    <option value="1º TENENTE PM">1º TENENTE PM</option>
+                    <option value="2º TENENTE PM">2º TENENTE PM</option>
+                </select>
+                [cite_start]<label for="re_aux">RE - Aux [cite: 2]</label>
+                <input type="text" id="re_aux" name="re_aux">
+                [cite_start]<label for="nome_guerra_aux">Nome de Guerra - Aux [cite: 2]</label>
+                <input type="text" id="nome_guerra_aux" name="nome_guerra_aux">
+            </div>
+        </div>
+
+        <div class="section-header">2. OPM RONDADA - 1</div>
+        <div class="grid-half">
+            [cite_start]<div class="form-group"><label for="opm1_unidade">Btl/ Cia PM / Pel / Gp [cite: 3]</label><input type="text" id="opm1_unidade" name="opm1_unidade"></div>
+            [cite_start]<div class="form-group"><label for="opm1_municipio">Município [cite: 3]</label><input type="text" id="opm1_municipio" name="opm1_municipio"></div>
+            [cite_start]<div class="form-group"><label for="opm1_chegada">Hora de chegada [cite: 3]</label><input type="time" id="opm1_chegada" name="opm1_chegada"></div>
+            [cite_start]<div class="form-group"><label for="opm1_saida">Hora de saída [cite: 3]</label><input type="time" id="opm1_saida" name="opm1_saida"></div>
+        </div>
+        
+        <div class="form-group">
+            <label for="opm1_item1">1. [cite_start]Policiais de Serviço na base (Posto/Graduação / RE / Nome de guerra): [cite: 3]</label>
+            <textarea id="opm1_item1" name="opm1_item1"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="opm1_item1_1">1.1. [cite_start]Apresentação pessoal e EPI (incluindo colete balístico e armamento do Sv Dia): [cite: 3]</label>
+            <textarea id="opm1_item1_1" name="opm1_item1_1"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="opm1_item2">2. [cite_start]Área externa da OPM (pintura de fachada, tóten, iluminação externa, poda, torneiras, mastros): [cite: 3]</label>
+            <textarea id="opm1_item2" name="opm1_item2"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="opm1_item3">3. [cite_start]Serviço de Dia e áreas comuns internas (limpeza, pintura, iluminação, materiais abandonados): [cite: 3]</label>
+            <textarea id="opm1_item3" name="opm1_item3"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="opm1_item4">4. [cite_start]Reserva de armas (segurança, cofre trancado, livro de controle): [cite: 3]</label>
+            <textarea id="opm1_item4" name="opm1_item4"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="opm1_item5">5. [cite_start]Vestiários (conservação, organização, limpeza, armários, vazamento): [cite: 3]</label>
+            <textarea id="opm1_item5" name="opm1_item5"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="opm1_item6">6. [cite_start]Copa/cozinha (conservação, organização, limpeza, eletrodomésticos, vazamento): [cite: 3]</label>
+            <textarea id="opm1_item6" name="opm1_item6"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="opm1_item7">7. [cite_start]Garagens (limpeza da área e viaturas, iluminação, materiais abandonados): [cite: 3]</label>
+            <textarea id="opm1_item7" name="opm1_item7"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="opm1_item8">8. [cite_start]Área de lazer (tipo, pintura, estado de conservação, materiais abandonados): [cite: 3]</label>
+            <textarea id="opm1_item8" name="opm1_item8"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="opm1_item9">9. [cite_start]Outros itens julgados oportunos (Observações): [cite: 3]</label>
+            <textarea id="opm1_item9" name="opm1_item9"></textarea>
+        </div>
+
+        <div class="section-header">3. OPM RONDADA - 2 (Se aplicável)</div>
+        <div class="grid-half">
+            [cite_start]<div class="form-group"><label for="opm2_unidade">Btl/ Cia PM / Pel / Gp [cite: 4]</label><input type="text" id="opm2_unidade" name="opm2_unidade"></div>
+            [cite_start]<div class="form-group"><label for="opm2_municipio">Município [cite: 4]</label><input type="text" id="opm2_municipio" name="opm2_municipio"></div>
+            [cite_start]<div class="form-group"><label for="opm2_chegada">Hora de chegada [cite: 4]</label><input type="time" id="opm2_chegada" name="opm2_chegada"></div>
+            [cite_start]<div class="form-group"><label for="opm2_saida">Hora de saída [cite: 4]</label><input type="time" id="opm2_saida" name="opm2_saida"></div>
+        </div>
+        <div class="form-group"><label for="opm2_item1">1. [cite_start]Policiais de Serviço na base: [cite: 4]</label><textarea id="opm2_item1" name="opm2_item1"></textarea></div>
+        <div class="form-group"><label for="opm2_item1_1">1.1. [cite_start]Apresentação pessoal e EPI: [cite: 4]</label><textarea id="opm2_item1_1" name="opm2_item1_1"></textarea></div>
+        <div class="form-group"><label for="opm2_item2">2. [cite_start]Área externa da OPM: [cite: 4]</label><textarea id="opm2_item2" name="opm2_item2"></textarea></div>
+        <div class="form-group"><label for="opm2_item3">3. [cite_start]Serviço de Dia e áreas comuns internas: [cite: 4]</label><textarea id="opm2_item3" name="opm2_item3"></textarea></div>
+        <div class="form-group"><label for="opm2_item4">4. [cite_start]Reserva de armas: [cite: 4]</label><textarea id="opm2_item4" name="opm2_item4"></textarea></div>
+        <div class="form-group"><label for="opm2_item5">5. [cite_start]Vestiários: [cite: 4]</label><textarea id="opm2_item5" name="opm2_item5"></textarea></div>
+        <div class="form-group"><label for="opm2_item6">6. [cite_start]Copa/cozinha: [cite: 4]</label><textarea id="opm2_item6" name="opm2_item6"></textarea></div>
+        <div class="form-group"><label for="opm2_item7">7. [cite_start]Garagens: [cite: 4]</label><textarea id="opm2_item7" name="opm2_item7"></textarea></div>
+        <div class="form-group"><label for="opm2_item8">8. [cite_start]Área de lazer: [cite: 4]</label><textarea id="opm2_item8" name="opm2_item8"></textarea></div>
+        <div class="form-group"><label for="opm2_item9">9. [cite_start]Outros itens julgados oportunos (Observações): [cite: 4]</label><textarea id="opm2_item9" name="opm2_item9"></textarea></div>
+
+        <div class="section-header">4. RONDA A PROGRAMA DE POLICIAMENTO - 1</div>
+        <div class="grid-half">
+            [cite_start]<div class="form-group"><label for="rpp1_horario">Horário [cite: 5]</label><input type="time" id="rpp1_horario" name="rpp1_horario"></div>
+            [cite_start]<div class="form-group"><label for="rpp1_viatura">Viatura [cite: 5]</label><input type="text" id="rpp1_viatura" name="rpp1_viatura"></div>
+            [cite_start]<div class="form-group"><label for="rpp1_km">Km [cite: 5]</label><input type="text" id="rpp1_km" name="rpp1_km"></div>
+            [cite_start]<div class="form-group"><label for="rpp1_local">Local [cite: 5]</label><input type="text" id="rpp1_local" name="rpp1_local"></div>
+        </div>
+        <div class="grid-half">
+            <div class="form-group">
+                [cite_start]<label>Encarregado (Enc) [cite: 5]</label>
+                <input type="text" name="rpp1_enc_re" placeholder="RE">
+                <input type="text" name="rpp1_enc_qra" placeholder="QRA">
+                <input type="text" name="rpp1_enc_arma" placeholder="Nº arma portátil">
+            </div>
+            <div class="form-group">
+                [cite_start]<label>Motorista (Mot) [cite: 5]</label>
+                <input type="text" name="rpp1_mot_re" placeholder="RE">
+                <input type="text" name="rpp1_mot_qra" placeholder="QRA">
+                <input type="text" name="rpp1_mot_arma" placeholder="Nº arma portátil">
+            </div>
+        </div>
+        
+        <div class="grid-half">
+            <div class="checkbox-group">
+                <label>Itens de Conformidade</label>
+                <div class="checkbox-item"><input type="checkbox" id="rpp1_item1" name="rpp1_item1"><label for="rpp1_item1">1. [cite_start]CPP está na vtr? [cite: 5]</label></div>
+                <div class="checkbox-item"><input type="checkbox" id="rpp1_item1_1" name="rpp1_item1_1"><label for="rpp1_item1_1">1.1. [cite_start]Está atualizado? [cite: 5]</label></div>
+                <div class="checkbox-item"><input type="checkbox" id="rpp1_item2" name="rpp1_item2"><label for="rpp1_item2">2. [cite_start]Vtr está no local conforme CPP? [cite: 5]</label></div>
+                <div class="checkbox-item"><input type="checkbox" id="rpp1_item3" name="rpp1_item3"><label for="rpp1_item3">3. [cite_start]Tablet (TMD) logado? [cite: 5]</label></div>
+                <div class="checkbox-item"><input type="checkbox" id="rpp1_item4" name="rpp1_item4"><label for="rpp1_item4">4. [cite_start]CPP, RSO e TMD estão em conformidade? [cite: 5]</label></div>
+            </div>
+            <div class="checkbox-group">
+                <label>Outros Itens</label>
+                <div class="checkbox-item"><input type="checkbox" id="rpp1_item5" name="rpp1_item5"><label for="rpp1_item5">5. [cite_start]O giroflex estava acionado? [cite: 5]</label></div>
+                <div class="checkbox-item"><input type="checkbox" id="rpp1_item6" name="rpp1_item6"><label for="rpp1_item6">6. [cite_start]RSO com produtividade anotada? [cite: 5]</label></div>
+                <div class="checkbox-item"><input type="checkbox" id="rpp1_item7" name="rpp1_item7"><label for="rpp1_item7">7. Houve treinamento no prazo de 15 dias? (POP, ICC,EAP, outros)[cite_start]? [cite: 5]</label></div>
+                <div class="checkbox-item"><input type="checkbox" id="rpp1_item8" name="rpp1_item8"><label for="rpp1_item8">8. [cite_start]Sabe elaborar BO PM Eletrônico? [cite: 5]</label></div>
+            </div>
+        </div>
+        [cite_start]<div class="form-group"><label for="rpp1_obs">Observações complementares: [cite: 5]</label><textarea id="rpp1_obs" name="rpp1_obs"></textarea></div>
+
+
+        <div class="section-header">5. RONDA A PROGRAMA DE POLICIAMENTO - 2 (Se aplicável)</div>
+        <div class="grid-half">
+            [cite_start]<div class="form-group"><label for="rpp2_horario">Horário [cite: 6]</label><input type="time" id="rpp2_horario" name="rpp2_horario"></div>
+            [cite_start]<div class="form-group"><label for="rpp2_viatura">Viatura [cite: 6]</label><input type="text" id="rpp2_viatura" name="rpp2_viatura"></div>
+            [cite_start]<div class="form-group"><label for="rpp2_km">Km [cite: 6]</label><input type="text" id="rpp2_km" name="rpp2_km"></div>
+            [cite_start]<div class="form-group"><label for="rpp2_local">Local [cite: 6]</label><input type="text" id="rpp2_local" name="rpp2_local"></div>
+        </div>
+        <div class="grid-half">
+            <div class="form-group">
+                [cite_start]<label>Encarregado (Enc) [cite: 6]</label>
+                <input type="text" name="rpp2_enc_re" placeholder="RE">
+                <input type="text" name="rpp2_enc_qra" placeholder="QRA">
+                <input type="text" name="rpp2_enc_arma" placeholder="Nº arma portátil">
+            </div>
+            <div class="form-group">
+                [cite_start]<label>Motorista (Mot) [cite: 6]</label>
+                <input type="text" name="rpp2_mot_re" placeholder="RE">
+                <input type="text" name="rpp2_mot_qra" placeholder="QRA">
+                <input type="text" name="rpp2_mot_arma" placeholder="Nº arma portátil">
+            </div>
+        </div>
+        <div class="grid-half">
+            <div class="checkbox-group">
+                <label>Itens de Conformidade</label>
+                <div class="checkbox-item"><input type="checkbox" id="rpp2_item1" name="rpp2_item1"><label for="rpp2_item1">1. [cite_start]CPP está na vtr? [cite: 6]</label></div>
+                <div class="checkbox-item"><input type="checkbox" id="rpp2_item1_1" name="rpp2_item1_1"><label for="rpp2_item1_1">1.1. [cite_start]Está atualizado? [cite: 6]</label></div>
+                <div class="checkbox-item"><input type="checkbox" id="rpp2_item2" name="rpp2_item2"><label for="rpp2_item2">2. [cite_start]Vtr está no local conforme CPP? [cite: 6]</label></div>
+                <div class="checkbox-item"><input type="checkbox" id="rpp2_item3" name="rpp2_item3"><label for="rpp2_item3">3. [cite_start]Tablet (TMD) logado? [cite: 6]</label></div>
+                <div class="checkbox-item"><input type="checkbox" id="rpp2_item4" name="rpp2_item4"><label for="rpp2_item4">4. [cite_start]CPP, RSO e TMD estão em conformidade? [cite: 6]</label></div>
+            </div>
+            <div class="checkbox-group">
+                <label>Outros Itens</label>
+                <div class="checkbox-item"><input type="checkbox" id="rpp2_item5" name="rpp2_item5"><label for="rpp2_item5">5. [cite_start]O giroflex estava acionado? [cite: 6]</label></div>
+                <div class="checkbox-item"><input type="checkbox" id="rpp2_item6" name="rpp2_item6"><label for="rpp2_item6">6. [cite_start]RSO com produtividade anotada? [cite: 6]</label></div>
+                <div class="checkbox-item"><input type="checkbox" id="rpp2_item7" name="rpp2_item7"><label for="rpp2_item7">7. [cite_start]Houve treinamento no prazo de 15 dias? [cite: 6]</label></div>
+                <div class="checkbox-item"><input type="checkbox" id="rpp2_item8" name="rpp2_item8"><label for="rpp2_item8">8. [cite_start]Sabe elaborar BO PM Eletrônico? [cite: 6]</label></div>
+            </div>
+        </div>
+        [cite_start]<div class="form-group"><label for="rpp2_obs">Observações complementares: [cite: 6]</label><textarea id="rpp2_obs" name="rpp2_obs"></textarea></div>
+
+        <div class="section-header">6. DOCUMENTOS ELABORADOS</div>
+        <div id="documentos-container">
+            <div class="grid-3 form-group doc-item">
+                [cite_start]<input type="text" name="doc_tipo_numero_1" placeholder="Tipo de Doc / Número [cite: 7]">
+                [cite_start]<input type="text" name="doc_assunto_1" placeholder="Assunto [cite: 7]">
+                [cite_start]<input type="text" name="doc_destino_1" placeholder="Destino [cite: 7]">
+            </div>
+        </div>
+
+        <div class="section-header">7. OBSERVAÇÕES E DESPACHOS</div>
+        <div class="form-group">
+            [cite_start]<label for="observacoes_gerais">Observações Gerais do Oficial Superior/Supervisor do CPI-10: [cite: 8]</label>
+            <textarea id="observacoes_gerais" name="observacoes_gerais"></textarea>
+        </div>
+        
+        <div class="form-group">
+            [cite_start]<label>Despacho do Oficial Superior/Supervisor do CPI-10 [cite: 8]</label>
+            <textarea name="despacho_oficial" rows="2" placeholder="Encaminho o presente para conhecimento."></textarea>
+            <input type="text" name="assinatura_oficial" placeholder="Carimbo e assinatura">
+            <input type="date" name="data_oficial">
+        </div>
+
+        <div class="form-group">
+            [cite_start]<label>Despacho do Ch Div OP [cite: 8]</label>
+            <textarea name="despacho_ch_div_op" rows="2" placeholder="Ao Sr Ch EM CPI-10"></textarea>
+            <input type="text" name="assinatura_ch_div_op" placeholder="Carimbo e assinatura">
+            <input type="date" name="data_ch_div_op">
+        </div>
+
+        <div class="form-group">
+            [cite_start]<label>Despacho do Ch EM CPI-10 [cite: 8]</label>
+            <textarea name="despacho_ch_em_cpi" rows="2" placeholder="Ao ______________________________________"></textarea>
+            <input type="text" name="assinatura_ch_em_cpi" placeholder="Carimbo e assinatura">
+            <input type="date" name="data_ch_em_cpi">
+        </div>
+
+        <button type="button" onclick="saveAndGeneratePDF()">Salvar Localmente e Gerar Relatório em PDF</button>
+
+    </div>
+
+    <script>
+        // 1. FUNÇÕES DE SUPORTE
+        
+        // Cálculo de KM Percorrido: Garante que o KM percorrido seja um número inteiro.
+        document.getElementById('km_final').addEventListener('input', calculateKm);
+        document.getElementById('km_inicio').addEventListener('input', calculateKm);
+
+        function calculateKm() {
+            const kmFinal = parseInt(document.getElementById('km_final').value) || 0;
+            const kmInicio = parseInt(document.getElementById('km_inicio').value) || 0;
+            const kmPercorridoField = document.getElementById('km_percorrido');
+
+            if (kmFinal >= kmInicio) {
+                kmPercorridoField.value = (kmFinal - kmInicio);
+            } else if (kmFinal < kmInicio && kmFinal !== 0) {
+                kmPercorridoField.value = "ERRO: KM Final menor que KM Inicial";
+            } else {
+                kmPercorridoField.value = "";
+            }
+        }
+
+        // Função para coletar todos os dados do formulário
+        function getFormData() {
+            const form = document.getElementById('report-form');
+            const data = {};
+            const inputs = form.querySelectorAll('input, textarea, select');
+            
+            inputs.forEach(input => {
+                if (input.type === 'checkbox') {
+                    data[input.name] = input.checked;
+                } else if (input.id === 'km_percorrido' && !isNaN(parseInt(input.value))) {
+                    data[input.name] = parseInt(input.value);
+                } else if (input.id === 'km_final' || input.id === 'km_inicio') {
+                    data[input.name] = parseInt(input.value) || 0;
+                } else {
+                    data[input.name] = input.value;
+                }
+            });
+            return data;
+        }
+
+        // 2. FUNÇÃO DE SALVAMENTO LOCAL (LocalStorage)
+        function saveReportLocally(reportData) {
+            try {
+                // Gera um ID único baseado no timestamp
+                const localId = 'report_' + new Date().getTime();
+                
+                // Adiciona o ID ao objeto de dados
+                reportData.localId = localId;
+
+                // Salva o objeto JSON no LocalStorage
+                localStorage.setItem(localId, JSON.stringify(reportData));
+                
+                console.log("Relatório salvo localmente com ID: ", localId);
+                return localId;
+
+            } catch (e) {
+                console.error("Erro ao salvar localmente: ", e);
+                alert("Erro ao salvar o relatório localmente. Tente novamente.");
+                return null;
+            }
+        }
+
+        // 3. FUNÇÃO PRINCIPAL QUE SALVA E GERA O PDF
+        async function saveAndGeneratePDF() {
+            const reportData = getFormData();
+            
+            // 3.1 Salva localmente
+            const docId = saveReportLocally(reportData);
+            
+            if (docId) {
+                alert("Relatório salvo no LocalStorage com sucesso. Gerando PDF...");
+                
+                // 3.2 Configuração e Geração de PDF (html2pdf.js)
+                const element = document.getElementById('report-form');
+
+                // Oculta o botão e inputs não necessários para o visual do PDF
+                const button = document.querySelector('button');
+                button.style.display = 'none';
+
+                const opt = {
+                    margin: 10,
+                    filename: 'Relatorio_Ronda_' + (reportData.data || 'sem_data') + '_' + docId + '.pdf', 
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+
+                // Inicia a geração
+                html2pdf().set(opt).from(element).save().then(() => {
+                    // Restaura o botão após a conclusão
+                    button.style.display = 'block';
+                });
+
+            }
+        }
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório de Ronda do Oficial Superior/Supervisor do CPI-10</title>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
@@ -523,3 +1026,4 @@
     </script>
 </body>
 </html>
+
